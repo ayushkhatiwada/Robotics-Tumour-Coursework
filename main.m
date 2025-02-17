@@ -21,8 +21,8 @@ VerticesUnique = plotTumour(X, Y, Z);
 
 % Create and plot the cutting tool path (extruded side walls).
 tolerance = 0;       % Outward offset distance
-pathColour = 'm';
-plotCuttingToolPath(VerticesUnique, tolerance, pathColour);
+colour = 'm';
+plotCuttingToolPath(VerticesUnique, tolerance, colour);
 
 
 % Final Plot Adjustments
