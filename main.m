@@ -1,5 +1,5 @@
 % main.m
-clear; clc;
+clear;clc;
 
 % Load the data
 load('X.mat'); % Contains variable X
@@ -18,8 +18,12 @@ VerticesUnique = plotTumour(X, Y, Z);
 % Compute and plot the bounding box for the tumour.
 [center, dims] = plotTumourBoundingBox(VerticesUnique);
 
+
 % Create and plot the cutting tool path (extruded side walls).
-plotCuttingToolPath(VerticesUnique);
+tolerance = 0;       % Outward offset distance
+pathColour = 'm';
+plotCuttingToolPath(VerticesUnique, tolerance, pathColour);
+
 
 % Final Plot Adjustments
 axis equal;
