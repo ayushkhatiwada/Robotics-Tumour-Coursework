@@ -1,5 +1,5 @@
 % main.m
-clear;clc;
+clc;
 
 % Load the data
 load('X.mat'); % Contains variable X
@@ -23,6 +23,8 @@ VerticesUnique = plotTumour(X, Y, Z);
 tolerance = 0;       % Outward offset distance
 colour = 'm';
 plotCuttingToolPath(VerticesUnique, tolerance, colour);
+plotCuttingToolPath(VerticesUnique, 2, 'b');
+
 
 
 % Final Plot Adjustments
