@@ -18,16 +18,14 @@ VerticesUnique = plotTumour(X, Y, Z);
 % Compute and plot the bounding box for the tumour.
 [center, dims] = plotTumourBoundingBox(VerticesUnique);
 
-% Create and plot outline of tumour in (x, y) axis
-tolerance = 0;      % Outward offset distance
-colour = 'b';
-lineStyle = ':';
-plotTumourOutline(VerticesUnique, tolerance, colour, lineStyle);
 
 % Create and plot the cutting tool path (extruded side walls).
-tolerance = 5;       % Outward offset distance
+tolerance = 0;       % Outward offset distance
 colour = 'm';
 plotCuttingToolPath(VerticesUnique, tolerance, colour);
+%plotCuttingToolPath(VerticesUnique, 10, 'b');
+
+
 
 % Final Plot Adjustments
 axis equal;

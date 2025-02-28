@@ -28,8 +28,8 @@ offsetPoly = polybuffer(tumourPoly, tolerance);
 [x_hull_offset, y_hull_offset] = boundary(offsetPoly);
 
 % Define the top and bottom z-levels for the extrusion.
-z_top    = 0;  
-z_bottom = min(VerticesUnique(:,3));
+z_top    = 0;
+z_bottom = min(VerticesUnique(:,3)) - 5; % minus 5mm for tolerance
 
 % Create the top and bottom vertices for the extrusion.
 topVertices    = [x_hull_offset, y_hull_offset, repmat(z_top, numel(x_hull_offset), 1)];
