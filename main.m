@@ -18,16 +18,40 @@ VerticesUnique = plotTumour(X, Y, Z);
 % Compute and plot the bounding box for the tumour.
 [center, dims] = plotTumourBoundingBox(VerticesUnique);
 
-% Create and plot outline of tumour in (x, y) axis
-tolerance = 0;      % Outward offset distance
-colour = 'b';
-lineStyle = ':';
-plotTumourOutline(VerticesUnique, tolerance, colour, lineStyle);
 
-% Create and plot the cutting tool path (extruded side walls).
-tolerance = 5;       % Outward offset distance
-colour = 'm';
-plotCuttingToolPath(VerticesUnique, tolerance, colour);
+
+
+
+
+%% Cutting Tool paths
+
+% Define parameters
+tolerance = 5;         % Offset (in mm) for the cutting path and deepest z computation
+numLaserSteps = 20;    % Number of steps for laser vertical movement
+numVerticalSteps = 20; % Number of steps for cutting tool vertical movement
+deltaZ = 5;            % Vertical increment used to compute the starting point
+
+% Precompute the starting point
+startPt = calculateStartingPoint(VerticesUnique, tolerance, deltaZ);
+
+% Generate and display trajectories; the coordinate data (with key messages)
+% is stored in the workspace as "laserPath" and "cuttingToolPath".
+generateLaserTrajectory(VerticesUnique, tolerance, numLaserSteps, startPt);
+generateCuttingTrajectory(VerticesUnique, tolerance, numVerticalSteps, startPt);
+
+
+
+
+%%
+
+
+
+
+
+
+
+
+
 
 % Final Plot Adjustments
 axis equal;
