@@ -28,9 +28,13 @@ plotTumourOutline(VerticesUnique, tolerance, colour, lineStyle);
 
 
 %% Plot the horizontal cut path (side walls of the cut)
-tolerance = 5;      % Outward offset distance for the cutting tool path
+
+% Additional depth the tools will cut in the z-direction
+z_tolerance = 5;
+% Outward offset distance for the cutting tool path
+outwards_tolerance = 5;      
 colour = 'm';       % Colour of the cutting tool path
-plotHorizontalCutPath(VerticesUnique, tolerance, colour);
+plotHorizontalCutPath(VerticesUnique, outwards_tolerance, z_tolerance, colour);
 
 
 %% Vertical Cuts of cutting tools (Laser & Cutting Tool Cut Trajectories)

@@ -43,7 +43,7 @@ y_hull_offset = [y_hull_offset; y_hull_offset(1)];
 % Plot the outline at the top surface level with the specified line style.
 plot3(x_hull_offset, y_hull_offset, repmat(z_top, size(x_hull_offset)), ...
       'Color', colour, 'LineWidth', 2, 'LineStyle', lineStyle, ...
-      'DisplayName', 'Tumour Outline');
+      'DisplayName', 'Tumour Convex Hull Outline');
 
 hold off; % Keep hold state as it was before
 end

@@ -1,7 +1,7 @@
-function generateCuttingTrajectory1(VerticesUnique, z_tolerance, startPt)
-% generateCuttingTrajectory1 - Computes, displays, and stores the cutting tool's second trajectory.
+function generateCuttingToolTrajectory1(VerticesUnique, z_tolerance, startPt)
+% generateCuttingToolTrajectory1 - Computes, displays, and stores the cutting tool's second trajectory.
 %
-% Syntax: generateCuttingTrajectory1(VerticesUnique, z_tolerance, startPt)
+% Syntax: generateCuttingToolTrajectory1(VerticesUnique, z_tolerance, startPt)
 %
 % Inputs:
 %   VerticesUnique  - Unique tumour surface points.

@@ -1,7 +1,7 @@
-function generateCuttingTrajectory2(VerticesUnique, z_tolerance)
-% generateCuttingTrajectory2 - Computes, displays, and stores the second cutting path of the cutting tool.
+function generateCuttingToolTrajectory2(VerticesUnique, z_tolerance)
+% generateCuttingToolTrajectory2 - Computes, displays, and stores the second cutting path of the cutting tool.
 %
-% Syntax: generateCuttingTrajectory2(VerticesUnique, z_tolerance)
+% Syntax: generateCuttingToolTrajectory2(VerticesUnique, z_tolerance)
 %
 % Inputs:
 %   VerticesUnique - Unique tumour surface points (Nx3 matrix: [x, y, z]).
