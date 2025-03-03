@@ -24,7 +24,7 @@ function animateCuttingPaths(laserBeamPath1, cuttingToolPath1, laserBeamPath2, c
 
     % Set default delay if not provided
     if nargin < 6
-        delayBetweenSteps = 0.01; % Default delay between steps (seconds)
+        delayBetweenSteps = 0.05; % Default delay between steps (seconds)
     end
     
     % Create a new figure with specified size and position
@@ -76,9 +76,9 @@ function animateCuttingPaths(laserBeamPath1, cuttingToolPath1, laserBeamPath2, c
     
     % Create legend handles - creating invisible objects with proper labels for the legend
     h_laser1 = plot3(NaN, NaN, NaN, 'Color', laser1_color, 'LineWidth', 2, 'DisplayName', 'Laser Beam Path 1 (Vertical)');
-    h_tool1 = plot3(NaN, NaN, NaN, 'Color', tool1_color, 'LineWidth', 2, 'DisplayName', 'Cutting Tool Path 1 (Vertical)');
+    h_tool1 = plot3(NaN, NaN, NaN, 'Color', tool1_color, 'LineWidth', 2, 'DisplayName', 'Cutting Tool Path 1');
     h_laser2 = plot3(NaN, NaN, NaN, 'Color', laser2_color, 'LineWidth', 2, 'DisplayName', 'Laser Beam Path 2 (Horizontal)');
-    h_tool2 = plot3(NaN, NaN, NaN, 'Color', tool2_color, 'LineWidth', 2, 'DisplayName', 'Cutting Tool Path 2 (Horizontal)');
+    h_tool2 = plot3(NaN, NaN, NaN, 'Color', tool2_color, 'LineWidth', 2, 'DisplayName', 'Cutting Tool Path 2');
     h_tumor = scatter3(NaN, NaN, NaN, 10, 'k', 'filled', 'DisplayName', 'Tumour Surface');
     legend([h_laser1, h_tool1, h_laser2, h_tool2, h_tumor], 'Location', 'northeast');
     
@@ -104,14 +104,7 @@ function animateCuttingPaths(laserBeamPath1, cuttingToolPath1, laserBeamPath2, c
                           'MarkerSize', 8, ...
                           'HandleVisibility', 'off');
         
-        % Initialize orientation line (for beam direction) without adding it to the legend
-        orientation_length = 10; % Length of orientation line in mm
-        h_orientation = quiver3(ax, path{1,1}, path{1,2}, path{1,3}, ...
-                               orientation_length * cosd(path{1,7}) * sind(path{1,5}), ... % x-component
-                               orientation_length * sind(path{1,7}) * sind(path{1,5}), ... % y-component
-                               orientation_length * cosd(path{1,5}), ... % z-component
-                               0, 'LineWidth', 2, 'Color', pathColor, 'MaxHeadSize', 0.5, ...
-                               'HandleVisibility', 'off');
+        % Removed orientation line as requested
         
         % Initialize path trace without adding it to the legend
         h_trace = plot3(ax, path{1,1}, path{1,2}, path{1,3}, ...
@@ -133,18 +126,12 @@ function animateCuttingPaths(laserBeamPath1, cuttingToolPath1, laserBeamPath2, c
             theta_y = path{i,6}; % Rotation around y-axis (yaw)
             theta_z = path{i,7}; % Rotation around z-axis (roll)
             
-            % Calculate direction vector based on rotation angles
-            % For simplicity, we'll focus on theta_x as the main angle for tool direction
-            dx = orientation_length * cosd(theta_z) * sind(theta_x);
-            dy = orientation_length * sind(theta_z) * sind(theta_x);
-            dz = orientation_length * cosd(theta_x);
+            % Removed direction vector calculation as orientation arrows are no longer needed
             
             % Update the current position marker
             set(h_current, 'XData', x_cur, 'YData', y_cur, 'ZData', z_cur);
             
-            % Update the orientation line
-            set(h_orientation, 'XData', x_cur, 'YData', y_cur, 'ZData', z_cur, ...
-                               'UData', dx, 'VData', dy, 'WData', dz);
+            % Removed orientation line update
             
             % Update the trace (accumulated path)
             x_trace = cellfun(@(c) c, path(1:i,1));
@@ -164,9 +151,8 @@ function animateCuttingPaths(laserBeamPath1, cuttingToolPath1, laserBeamPath2, c
         end
         
         % Keep the final trace visible
-        % But remove the current point marker and orientation line for cleaner visualization
+        % But remove the current point marker for cleaner visualization
         delete(h_current);
-        delete(h_orientation);
     end
     
     % Animate each path sequentially
