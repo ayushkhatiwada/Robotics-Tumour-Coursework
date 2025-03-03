@@ -1,12 +1,11 @@
-function generateCuttingTrajectory(VerticesUnique, tolerance, numVerticalSteps, startPt)
-% generateCuttingTrajectory - Computes, displays, and stores the cutting tool trajectory.
+function generateCuttingTrajectory1(VerticesUnique, tolerance, startPt)
+% generateCuttingTrajectory1 - Computes, displays, and stores the cutting tool's second trajectory.
 %
-% Syntax: generateCuttingTrajectory(VerticesUnique, tolerance, numVerticalSteps, startPt)
+% Syntax: generateCuttingTrajectory1(VerticesUnique, tolerance, startPt)
 %
 % Inputs:
 %   VerticesUnique  - Unique tumour surface points.
 %   tolerance       - Offset distance for the cutting path (in mm).
-%   numVerticalSteps- Number of steps for the vertical descent/ascent.
 %   startPt         - Precomputed starting point [x, y, z].
 %
 % Description:
@@ -16,9 +15,10 @@ function generateCuttingTrajectory(VerticesUnique, tolerance, numVerticalSteps, 
 %   The trajectory is stored as a cell array with columns:
 %   {x, y, z, label, theta_x, theta_y, theta_z}. Each step is printed to the command window.
 %
-% The resulting cell array is stored in the MATLAB workspace as "cuttingToolPath".
+% The resulting cell array is stored in the MATLAB workspace as "cuttingToolPath1".
 
-% Use the provided starting point (startPt is [x, y, z])
+% Fix the number of vertical steps to 20
+numVerticalSteps = 20;
 
 % Determine cutting depth (same as laser deepest position)
 z_bottom = min(VerticesUnique(:,3)) - tolerance;
@@ -75,18 +75,23 @@ end
 cuttingToolPath{1,4} = sprintf('Beginning of cutting tool path at (%.4f, %.4f, %.4f).', startPt(1), startPt(2), startPt(3));
 cuttingToolPath{numVerticalSteps,4} = ['Cutting tool has reached cutting depth at z = ', num2str(z_bottom), '.'];
 cuttingToolPath{numVerticalSteps+1,4} = 'Cutting tool is now cutting around the tumour.';
-cuttingToolPath{numVerticalSteps + numLateralPoints,4} = 'Cutting tool has completed the lateral cutting path and is returning.';
+cuttingToolPath{numVerticalSteps + numLateralPoints,4} = 'Cutting tool has completed the lateral cutting path and is returning to start position.';
 cuttingToolPath{end,4} = 'Cutting tool is at start position, cutting job is done.';
 
+%% Enhanced display separators for clearer output:
+separator = repmat('=', 1, 70);
+fprintf('\n%s\n', separator);
+disp('         *** CUTTING TOOL TRAJECTORY 1 (VERTICAL CUT) ***         ');
+fprintf('%s\n\n', separator);
+
 %% Display the full trajectory on the command window:
-disp('--- Cutting Tool Trajectory ---');
 for i = 1:numTotalSteps
     fprintf('Step %d: x = %.4f, y = %.4f, z = %.4f, Orientation = [%.4f, %.4f, %.4f], Message: %s\n', ...
         i, cuttingToolPath{i,1}, cuttingToolPath{i,2}, cuttingToolPath{i,3}, ...
         cuttingToolPath{i,5}, cuttingToolPath{i,6}, cuttingToolPath{i,7}, cuttingToolPath{i,4});
 end
-disp('--------------------------------');
+fprintf('\n%s\n\n', separator);
 
 %% Store the trajectory in the MATLAB base workspace
-assignin('base', 'cuttingToolPath', cuttingToolPath);
+assignin('base', 'cuttingToolPath1', cuttingToolPath);
 end

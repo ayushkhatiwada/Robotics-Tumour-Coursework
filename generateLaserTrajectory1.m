@@ -1,24 +1,23 @@
-function generateLaserTrajectory(VerticesUnique, tolerance, numLaserSteps, startPt)
-% generateLaserTrajectory - Computes, displays, and stores the laser tool trajectory.
+function generateLaserTrajectory1(VerticesUnique, tolerance, startPt)
+% generateLaserTrajectory1 - Computes, displays, and stores the laser tool's first trajectory.
 %
-% Syntax: generateLaserTrajectory(VerticesUnique, tolerance, numLaserSteps, startPt)
+% Syntax: generateLaserTrajectory1(VerticesUnique, tolerance, startPt)
 %
 % Inputs:
 %   VerticesUnique - Unique tumour surface points.
 %   tolerance      - Offset distance (in mm) used to compute the deepest z.
-%   numLaserSteps  - Number of steps for the vertical descent (and ascent).
 %   startPt        - Precomputed starting point [x, y, z].
 %
 % Description:
 %   The laser tool starts at the provided start point, descends vertically to the
-%   deepest position (computed as z_bottom = min(VerticesUnique(:,3)) - tolerance),
-%   then ascends back to the start. The trajectory is stored as a cell array with columns:
+%   deepest position (z_bottom = min(VerticesUnique(:,3)) - tolerance), then ascends back
+%   to the start. The trajectory is stored as a cell array with columns:
 %   {x, y, z, label, theta_x, theta_y, theta_z}. Each step is printed to the command window.
 %
-% The resulting cell array is stored in the MATLAB workspace as "laserPath".
+% The resulting cell array is stored in the MATLAB workspace as "laserBeamPath1".
 
-% Use the provided starting point
-% startPt = [x, y, z] (already computed outside this function)
+% Fixed number of steps for vertical descent/ascent
+numLaserSteps = 20;
 
 % Determine deepest z position
 z_bottom = min(VerticesUnique(:,3)) - tolerance;
@@ -57,20 +56,25 @@ for i = 1:numTotalSteps
 end
 
 %% Insert key messages into the cell array:
-laserPath{1,4} = sprintf('Beginning of laser path at (%.4f, %.4f, %.4f).', startPt(1), startPt(2), startPt(3));
-laserPath{numLaserSteps,4} = ['Laser has reached the deepest position at z = ', num2str(z_bottom), '.'];
-laserPath{numLaserSteps+1,4} = 'Laser is shut off, returning to start position.';
-laserPath{end,4} = 'Laser is at start position, laser''s job is done.';
+laserPath{1,4} = sprintf('Beginning of laser beam path at (%.4f, %.4f, %.4f).', startPt(1), startPt(2), startPt(3));
+laserPath{numLaserSteps,4} = ['Laser beam has reached the deepest position at z = ', num2str(z_bottom), '.'];
+laserPath{numLaserSteps+1,4} = 'Laser is shut off, returning beam to start position.';
+laserPath{end,4} = 'Laser beam is at start position, laser''s job is done.';
+
+%% Enhanced display separators for clearer output:
+separator = repmat('=',1,70);
+fprintf('\n%s\n', separator);
+disp('           *** LASER BEAM TRAJECTORY 1 (VERTICAL CUT) ***           ');
+fprintf('%s\n\n', separator);
 
 %% Display the full trajectory on the command window:
-disp('--- Laser Trajectory ---');
 for i = 1:numTotalSteps
     fprintf('Step %d: x = %.4f, y = %.4f, z = %.4f, Orientation = [%.4f, %.4f, %.4f], Message: %s\n', ...
         i, laserPath{i,1}, laserPath{i,2}, laserPath{i,3}, ...
         laserPath{i,5}, laserPath{i,6}, laserPath{i,7}, laserPath{i,4});
 end
-disp('-------------------------');
+fprintf('\n%s\n\n', separator);
 
 %% Store the trajectory in the MATLAB base workspace
-assignin('base', 'laserPath', laserPath);
+assignin('base', 'laserBeamPath1', laserPath);
 end

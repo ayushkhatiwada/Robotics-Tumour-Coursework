@@ -1,24 +1,18 @@
-function startPt = calculateStartingPoint(VerticesUnique, tolerance, deltaZ)
-% calculateStartingPoint - Computes the starting point based on tumour data.
+function startPt = calculateStartingPoint1(VerticesUnique, tolerance, deltaZ)
+% calculateStartingPoint1 - Computes the first starting point based on tumour data.
 %
-% Syntax: startPt = calculateStartingPoint(VerticesUnique, tolerance, deltaZ)
+% Syntax: startPt = calculateStartingPoint1(VerticesUnique, tolerance, deltaZ)
 %
 % Inputs:
 %   VerticesUnique - A matrix of tumour surface points [x, y, z].
 %   tolerance      - Offset distance (in mm) for the convex hull (e.g., 5 mm).
 %   deltaZ         - Vertical increment (in mm) to raise the starting point (e.g., 5 mm).
 %
-% Description:
-%   The function computes the convex hull of the tumour points in the x-y plane,
-%   offsets the hull outward by 'tolerance', selects the first boundary point,
-%   and then sets the starting z coordinate as the top surface (max z in VerticesUnique)
-%   plus deltaZ.
-%
 % Outputs:
 %   startPt - A 1×3 vector [x, y, z] representing the calculated starting point.
 %
 % Example:
-%   startPt = calculateStartingPoint(VerticesUnique, 5, 5);
+%   startPt = calculateStartingPoint1(VerticesUnique, 5, 5);
 
     % Compute convex hull in the x-y plane
     k_xy = convhull(VerticesUnique(:,1), VerticesUnique(:,2));
