@@ -1,17 +1,18 @@
-function plotCuttingToolPath(VerticesUnique, tolerance, colour)
-% plotCuttingToolPath - Plots the cutting tool path as extruded side walls.
+function plotHorizontalCutPath(VerticesUnique, tolerance, colour)
+% plotHorizontalCutPath - Plots the cutting tool path as extruded side walls in the x-y plane.
 %
-% Syntax: plotCuttingToolPath(VerticesUnique, tolerance, colour)
+% Syntax: plotHorizontalCutPath(VerticesUnique, tolerance, colour)
 %
 % Inputs:
 %   VerticesUnique - Unique tumour surface points.
 %   tolerance      - Outward offset distance from the tumour convex hull.
 %   colour         - Colour for the cutting tool path (e.g., 'm', [1 0 1], etc.).
 %
-% The function computes the 2D convex hull (in the x-y plane) of the tumour
-% surface points, applies an outward offset using the specified tolerance, and then
-% extrudes these offset points vertically between z_top (0) and the lowest z-value
-% of the tumour to form side walls that represent the cutting tool path.
+% Description:
+%   The function computes the 2D convex hull (in the x-y plane) of the tumour
+%   surface points, applies an outward offset using the specified tolerance, and then
+%   extrudes these offset points horizontally between z_top (0) and the lowest z-value
+%   of the tumour to form side walls that represent the cutting tool path.
 
 % Compute the 2D convex hull in the x-y plane.
 k_xy = convhull(VerticesUnique(:,1), VerticesUnique(:,2));
@@ -42,7 +43,7 @@ for i = 1:n
     faceVerts = [topVertices(i,:); topVertices(j,:); bottomVertices(j,:); bottomVertices(i,:)];
     if i == 1
         patch(faceVerts(:,1), faceVerts(:,2), faceVerts(:,3), colour, ...
-              'FaceAlpha', 0.3, 'EdgeColor', colour, 'DisplayName', 'Cutting Tool Path');
+              'FaceAlpha', 0.3, 'EdgeColor', colour, 'DisplayName', 'Horizontal Cutting Tool Path');
     else
         patch(faceVerts(:,1), faceVerts(:,2), faceVerts(:,3), colour, ...
               'FaceAlpha', 0.3, 'EdgeColor', colour, 'HandleVisibility','off');
