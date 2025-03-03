@@ -34,22 +34,21 @@ plotCuttingToolPath(VerticesUnique, tolerance, colour);
 %% Cutting Tool Paths 1
 
 % Define parameters
-tolerance = 5;         % Offset (in mm) for the cutting path and deepest z computation
-numVerticalSteps = 20; % Number of steps for cutting tool vertical movement
+tolerance = 5;         % Offset (in mm) for the cutting path
 deltaZ = 5;            % Vertical increment used to compute the starting point
 
 % Precompute the starting point
-startPt = calculateStartingPoint1(VerticesUnique, tolerance, deltaZ);
+startPt1 = calculateStartingPoint1(VerticesUnique, tolerance, deltaZ);
 
-% Generate and display trajectories; the coordinate data (with key messages)
-% is stored in the workspace as "laserPath" and "cuttingToolPath".
-% generateLaserTrajectory1(VerticesUnique, tolerance, numLaserSteps, startPt);
-% generateCuttingTrajectory1(VerticesUnique, tolerance, numVerticalSteps, startPt);
+z_tolerance = 5;
+
+generateLaserTrajectory1(VerticesUnique, z_tolerance, startPt1);
+generateCuttingTrajectory1(VerticesUnique, z_tolerance, startPt1);
 
 
 %% Cutting Tool Paths 2
-generateLaserTrajectory2(VerticesUnique, tolerance, numLaserSteps);
-
+generateLaserTrajectory2(VerticesUnique, z_tolerance);
+generateCuttingTrajectory2(VerticesUnique, z_tolerance);
 
 
 

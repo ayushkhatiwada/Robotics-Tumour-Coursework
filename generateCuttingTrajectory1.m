@@ -1,16 +1,16 @@
-function generateCuttingTrajectory1(VerticesUnique, tolerance, startPt)
+function generateCuttingTrajectory1(VerticesUnique, z_tolerance, startPt)
 % generateCuttingTrajectory1 - Computes, displays, and stores the cutting tool's second trajectory.
 %
-% Syntax: generateCuttingTrajectory1(VerticesUnique, tolerance, startPt)
+% Syntax: generateCuttingTrajectory1(VerticesUnique, z_tolerance, startPt)
 %
 % Inputs:
 %   VerticesUnique  - Unique tumour surface points.
-%   tolerance       - Offset distance for the cutting path (in mm).
+%   z_tolerance     - Offset distance for the cutting path (in mm).
 %   startPt         - Precomputed starting point [x, y, z].
 %
 % Description:
 %   The cutting tool starts at the provided start point, descends vertically to the cutting
-%   depth (z_bottom = min(VerticesUnique(:,3)) - tolerance), then moves laterally along an offset
+%   depth (z_bottom = min(VerticesUnique(:,3)) - z_tolerance), then moves laterally along an offset
 %   convex hull (the cutting path) at that depth, and finally ascends back to the start.
 %   The trajectory is stored as a cell array with columns:
 %   {x, y, z, label, theta_x, theta_y, theta_z}. Each step is printed to the command window.
@@ -21,7 +21,7 @@ function generateCuttingTrajectory1(VerticesUnique, tolerance, startPt)
 numVerticalSteps = 20;
 
 % Determine cutting depth (same as laser deepest position)
-z_bottom = min(VerticesUnique(:,3)) - tolerance;
+z_bottom = min(VerticesUnique(:,3)) - z_tolerance;
 
 %% Part 1: Vertical descent from startPt to z_bottom
 descentZ = linspace(startPt(3), z_bottom, numVerticalSteps)';
@@ -35,9 +35,9 @@ verticalDescent = [repmat(startPt(1), numVerticalSteps, 1), ...
 k_xy = convhull(VerticesUnique(:,1), VerticesUnique(:,2));
 x_hull = VerticesUnique(k_xy, 1);
 y_hull = VerticesUnique(k_xy, 2);
-% Create a polyshape and apply an outward offset
+% Create a polyshape and apply an outward offset using z_tolerance
 tumourPoly = polyshape(x_hull, y_hull);
-offsetPoly = polybuffer(tumourPoly, tolerance);
+offsetPoly = polybuffer(tumourPoly, z_tolerance);
 [x_boundary, y_boundary] = boundary(offsetPoly);
 % Ensure closed loop
 x_boundary = [x_boundary; x_boundary(1)];

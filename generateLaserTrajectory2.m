@@ -1,25 +1,28 @@
-function generateLaserTrajectory2(VerticesUnique, z_tolerance, numLaserSteps)
+function generateLaserTrajectory2(VerticesUnique, z_tolerance)
 % generateLaserTrajectory2 - Computes, displays, and stores the horizontal laser trajectory (round trip)
 %                             using a negative vertical offset (z_tolerance).
 %
-% Syntax: generateLaserTrajectory2(VerticesUnique, z_tolerance, numLaserSteps)
+% Syntax: generateLaserTrajectory2(VerticesUnique, z_tolerance)
 %
 % Inputs:
 %   VerticesUnique - Unique tumour surface points (Nx3 matrix with columns [x, y, z]).
 %   z_tolerance    - Vertical offset (in mm) applied to the tumour's minimum z. For example,
 %                    if z_tolerance is 5, the laser beam will be positioned 5 mm below the
 %                    tumour's minimum z.
-%   numLaserSteps  - Number of steps for the forward (or return) cut.
 %
 % Description:
 %   The function computes the tumour's bounding box and defines the starting point for the
-%   horizontal laser cut as (max_x, min_y, z_level), where z_level = min(VerticesUnique(:,3)) - z_tolerance.
+%   horizontal laser cut as (max_x, min_y, z_level), where 
+%       z_level = min(VerticesUnique(:,3)) - z_tolerance.
 %   The laser beam is assumed to be oriented horizontally with fixed orientation
-%   [theta_x, theta_y, theta_z] = [90, 0, 0] (degrees) so that it points toward decreasing x.
-%   The beam moves in a straight line from the starting x position (max_x) to the minimum x value,
-%   then returns to the starting point along the same line.
+%       [theta_x, theta_y, theta_z] = [90, 0, 0] (degrees),
+%   so that it points toward decreasing x. The beam moves in a straight line from the starting
+%   x position (max_x) to the minimum x value, then returns to the starting point along the same line.
 %   Key messages are inserted into the trajectory data, the complete round-trip trajectory is printed,
 %   and the resulting cell array is stored in the MATLAB base workspace as "laserPath2".
+
+    % Fix the number of steps for the forward (or return) cut to 20
+    numLaserSteps = 20;
 
     % Compute bounding box from tumour data
     min_x = min(VerticesUnique(:,1));
@@ -85,7 +88,7 @@ function generateLaserTrajectory2(VerticesUnique, z_tolerance, numLaserSteps)
                                 startPoint(1), startPoint(2), startPoint(3));
     
     % Enhanced display separators for clearer output:
-    separator = repmat('=',1,70);
+    separator = repmat('=', 1, 70);
     fprintf('\n%s\n', separator);
     disp('       *** LASER BEAM TRAJECTORY 2 (HORIZONTAL CUT) ***       ');
     fprintf('%s\n\n', separator);

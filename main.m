@@ -34,19 +34,19 @@ plotCuttingToolPath(VerticesUnique, tolerance, colour);
 %% Cutting Tool Paths 1
 
 % Define parameters
-tolerance = 5;         % Offset (in mm) for the cutting path and deepest z computation
-deltaZ = 5;            % Vertical increment used to compute the starting point
+tolerance = 5;         % Offset (in mm) for the cutting path around the tumour
 
 % Precompute the starting point
-startPt1 = calculateStartingPoint1(VerticesUnique, tolerance, deltaZ);
+startPt1 = calculateStartingPoint1(VerticesUnique, tolerance);
 
-generateLaserTrajectory1(VerticesUnique, tolerance, startPt1);
-generateCuttingTrajectory1(VerticesUnique, tolerance, startPt1);
+z_tolerance = 5;
+% generateLaserTrajectory1(VerticesUnique, z_tolerance, startPt1);
+% generateCuttingTrajectory1(VerticesUnique, z_tolerance, startPt1);
 
 
 %% Cutting Tool Paths 2
-generateLaserTrajectory2(VerticesUnique, tolerance, 20);
-generateCuttingTrajectory2(VerticesUnique, tolerance, 20);
+generateLaserTrajectory2(VerticesUnique, z_tolerance);
+generateCuttingTrajectory2(VerticesUnique, z_tolerance);
 
 
 

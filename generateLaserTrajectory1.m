@@ -1,16 +1,16 @@
-function generateLaserTrajectory1(VerticesUnique, tolerance, startPt)
+function generateLaserTrajectory1(VerticesUnique, z_tolerance, startPt)
 % generateLaserTrajectory1 - Computes, displays, and stores the laser tool's first trajectory.
 %
-% Syntax: generateLaserTrajectory1(VerticesUnique, tolerance, startPt)
+% Syntax: generateLaserTrajectory1(VerticesUnique, z_tolerance, startPt)
 %
 % Inputs:
 %   VerticesUnique - Unique tumour surface points.
-%   tolerance      - Offset distance (in mm) used to compute the deepest z.
+%   z_tolerance    - Vertical offset (in mm) used to compute the deepest z.
 %   startPt        - Precomputed starting point [x, y, z].
 %
 % Description:
 %   The laser tool starts at the provided start point, descends vertically to the
-%   deepest position (z_bottom = min(VerticesUnique(:,3)) - tolerance), then ascends back
+%   deepest position (z_bottom = min(VerticesUnique(:,3)) - z_tolerance), then ascends back
 %   to the start. The trajectory is stored as a cell array with columns:
 %   {x, y, z, label, theta_x, theta_y, theta_z}. Each step is printed to the command window.
 %
@@ -20,7 +20,7 @@ function generateLaserTrajectory1(VerticesUnique, tolerance, startPt)
 numLaserSteps = 20;
 
 % Determine deepest z position
-z_bottom = min(VerticesUnique(:,3)) - tolerance;
+z_bottom = min(VerticesUnique(:,3)) - z_tolerance;
 
 %% Generate vertical descent (from startPt to z_bottom)
 laserDescendZ = linspace(startPt(3), z_bottom, numLaserSteps)';
@@ -62,7 +62,7 @@ laserPath{numLaserSteps+1,4} = 'Laser is shut off, returning beam to start posit
 laserPath{end,4} = 'Laser beam is at start position, laser''s job is done.';
 
 %% Enhanced display separators for clearer output:
-separator = repmat('=',1,70);
+separator = repmat('=', 1, 70);
 fprintf('\n%s\n', separator);
 disp('           *** LASER BEAM TRAJECTORY 1 (VERTICAL CUT) ***           ');
 fprintf('%s\n\n', separator);

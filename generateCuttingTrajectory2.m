@@ -1,14 +1,12 @@
-function generateCuttingTrajectory2(VerticesUnique, z_tolerance, numVerticalSteps, numHorizontalSteps)
+function generateCuttingTrajectory2(VerticesUnique, z_tolerance)
 % generateCuttingTrajectory2 - Computes, displays, and stores the second cutting path of the cutting tool.
 %
-% Syntax: generateCuttingTrajectory2(VerticesUnique, z_tolerance, numVerticalSteps, numHorizontalSteps)
+% Syntax: generateCuttingTrajectory2(VerticesUnique, z_tolerance)
 %
 % Inputs:
 %   VerticesUnique     - Unique tumour surface points (Nx3 matrix: [x, y, z]).
 %   z_tolerance        - Vertical offset (in mm) applied to the tumour's minimum z.
 %                        The laser-made hole is at z_level = min(VerticesUnique(:,3)) - z_tolerance.
-%   numVerticalSteps   - Number of steps for the vertical descent into the hole.
-%   numHorizontalSteps - Number of steps for each horizontal (forward/return) cut along the y-axis.
 %
 % Description:
 %   The cutting tool, with fixed orientation [90, 0, 0], begins above the hole.
@@ -24,6 +22,10 @@ function generateCuttingTrajectory2(VerticesUnique, z_tolerance, numVerticalStep
 % is printed to the command window with enhanced separators and stored in the MATLAB base workspace
 % as "cuttingToolPath2".
 
+    % Fix the number of steps for vertical descent/ascent and horizontal movement to 20
+    numVerticalSteps = 20;
+    numHorizontalSteps = 20;
+    
     % Compute bounding box parameters from tumour data
     max_x = max(VerticesUnique(:,1));
     min_y = min(VerticesUnique(:,2));
@@ -34,7 +36,7 @@ function generateCuttingTrajectory2(VerticesUnique, z_tolerance, numVerticalStep
     z_level = min_z - z_tolerance;
     
     % Define a vertical descent offset (how far above the hole the tool starts)
-    descent_offset = 5;  % mm (this value may be adjusted)
+    descent_offset = 5;  % mm
     
     % Part 1: Vertical descent into the hole
     % Start above the hole: (max_x, min_y, z_level + descent_offset)
@@ -83,7 +85,7 @@ function generateCuttingTrajectory2(VerticesUnique, z_tolerance, numVerticalStep
     cuttingToolPath2{end,4} = sprintf('Cutting tool has moved horizontally out of the hole, returning to (%.4f, %.4f, %.4f).', max_x, min_y, z_level);
     
     % Enhanced display separators for clearer output:
-    separator = repmat('=',1,70);
+    separator = repmat('=', 1, 70);
     fprintf('\n%s\n', separator);
     disp('       *** CUTTING TOOL TRAJECTORY 2 (HORIZONTAL CUT) ***       ');
     fprintf('%s\n\n', separator);
