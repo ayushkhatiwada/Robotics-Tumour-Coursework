@@ -1,62 +1,69 @@
-function generateCuttingToolTrajectory2(VerticesUnique, z_tolerance)
+function cuttingToolPath2 = generateCuttingToolTrajectory2(VerticesUnique, z_tolerance)
 % generateCuttingToolTrajectory2 - Computes, displays, and stores the second cutting path of the cutting tool.
 %
-% Syntax: generateCuttingToolTrajectory2(VerticesUnique, z_tolerance)
+% Syntax: cuttingToolPath2 = generateCuttingToolTrajectory2(VerticesUnique, z_tolerance)
 %
 % Inputs:
 %   VerticesUnique - Unique tumour surface points (Nx3 matrix: [x, y, z]).
 %   z_tolerance    - Vertical offset (in mm) applied to the tumour's minimum z.
-%                    The laser-made hole is at z_level = min(VerticesUnique(:,3)) - z_tolerance.
+%                    (The laser-made hole is at z_level = min(VerticesUnique(:,3)) - z_tolerance)
+%
+% Outputs:
+%   cuttingToolPath2 - A cell array with columns {x, y, z, label, theta_x, theta_y, theta_z}
+%                      representing the trajectory of the cutting tool.
 %
 % Description:
-%   The cutting tool, with fixed orientation [90, 0, 0], performs a horizontal cut.
-%   It assumes the tool is already at the hole level at (max_x, min_y, z_level), where
-%   z_level = min(VerticesUnique(:,3)) - z_tolerance. The tool then moves horizontally along
-%   the y-axis from y = min_y to y = max_y (the forward cut) and then returns horizontally back
-%   to the starting position. Key messages mark the beginning, the forward cut’s completion,
-%   and the return.
+%   The cutting tool is assumed to be at the hole level at (max_x, min_y, z_level) and with fixed orientation [90, 0, 0].
+%   It first enters the hole by moving horizontally along the x-axis from (max_x, min_y, z_level) to (min_x, min_y, z_level),
+%   then cuts along the y-axis from (min_x, min_y, z_level) to (min_x, max_y, z_level),
+%   and finally exits the hole along the x-axis from (min_x, max_y, z_level) to (max_x, max_y, z_level).
+%   The resulting trajectory is printed step-by-step and stored in the MATLAB base workspace as "cuttingToolPath2".
 %
-% The complete trajectory (a cell array with columns {x, y, z, label, theta_x, theta_y, theta_z})
-% is printed to the command window with enhanced separators and stored in the MATLAB base workspace
-% as "cuttingToolPath2".
+% Example:
+%   cuttingToolPath2 = generateCuttingToolTrajectory2(VerticesUnique, 5);
 
-    % Fix the number of horizontal steps to 20 for both forward and return segments
-    numHorizontalSteps = 20;
+    % Fix the number of steps for each horizontal segment to 20
+    numSteps = 20;
     
     % Compute bounding box parameters from tumour data
     max_x = max(VerticesUnique(:,1));
+    min_x = min(VerticesUnique(:,1));
     min_y = min(VerticesUnique(:,2));
     max_y = max(VerticesUnique(:,2));
     min_z = min(VerticesUnique(:,3));
     
-    % Define the z-level for the hole (same as the horizontal laser beam)
+    % Define the z-level for the hole
     z_level = min_z - z_tolerance;
     
-    % Define the starting point for the horizontal cut:
-    % (max_x, min_y, z_level)
-    horizontalStart = [max_x, min_y, z_level];
+    % Segment 1: Horizontal Entry (along x-axis, from right edge to left edge)
+    % From (max_x, min_y, z_level) to (min_x, min_y, z_level)
+    x_entry = linspace(max_x, min_x, numSteps)';
+    y_entry = repmat(min_y, numSteps, 1);
+    z_entry = repmat(z_level, numSteps, 1);
+    entrySegment = [x_entry, y_entry, z_entry, zeros(numSteps, 3)];
     
-    % Part 1: Horizontal forward cut along the y-axis (at hole level)
-    % From (max_x, min_y, z_level) to (max_x, max_y, z_level)
-    y_forward = linspace(min_y, max_y, numHorizontalSteps)';
-    horizontalForward = [repmat(max_x, numHorizontalSteps, 1), y_forward, repmat(z_level, numHorizontalSteps, 1), zeros(numHorizontalSteps, 3)];
+    % Segment 2: Horizontal Cut along y-axis
+    % From (min_x, min_y, z_level) to (min_x, max_y, z_level)
+    y_cut = linspace(min_y, max_y, numSteps)';
+    x_cut = repmat(min_x, numSteps, 1);
+    z_cut = repmat(z_level, numSteps, 1);
+    cutSegment = [x_cut, y_cut, z_cut, zeros(numSteps, 3)];
     
-    % Part 2: Horizontal return cut along the y-axis (at hole level)
-    % From (max_x, max_y, z_level) to (max_x, min_y, z_level)
-    y_return = linspace(max_y, min_y, numHorizontalSteps)';
-    % Remove duplicate point at the junction:
-    y_return = y_return(2:end);
-    horizontalReturn = [repmat(max_x, length(y_return), 1), y_return, repmat(z_level, length(y_return), 1), zeros(length(y_return), 3)];
+    % Segment 3: Horizontal Exit (along x-axis)
+    % From (min_x, max_y, z_level) to (max_x, max_y, z_level)
+    x_exit = linspace(min_x, max_x, numSteps)';
+    y_exit = repmat(max_y, numSteps, 1);
+    z_exit = repmat(z_level, numSteps, 1);
+    exitSegment = [x_exit, y_exit, z_exit, zeros(numSteps, 3)];
     
-    % Combine forward and return segments
-    allCoords = [horizontalForward; horizontalReturn];
+    % Combine all segments into one trajectory.
+    allCoords = [entrySegment; cutSegment; exitSegment];
     numTotalSteps = size(allCoords, 1);
     
-    % Fixed orientation for the tool (horizontal): [theta_x, theta_y, theta_z] = [90, 0, 0]
+    % Fixed orientation for horizontal movement: [theta_x, theta_y, theta_z] = [90, 0, 0]
     fixedOrientation = [90, 0, 0];
     
-    % Create a cell array for trajectory data with columns:
-    % {x, y, z, label, theta_x, theta_y, theta_z}
+    % Build the trajectory cell array.
     cuttingToolPath2 = cell(numTotalSteps, 7);
     for i = 1:numTotalSteps
         cuttingToolPath2{i,1} = allCoords(i,1);
@@ -69,17 +76,19 @@ function generateCuttingToolTrajectory2(VerticesUnique, z_tolerance)
     end
     
     % Insert key messages:
-    cuttingToolPath2{1,4} = sprintf('Beginning of horizontal cutting tool path at (%.4f, %.4f, %.4f).', horizontalStart(1), horizontalStart(2), horizontalStart(3));
-    cuttingToolPath2{numHorizontalSteps,4} = sprintf('Cutting tool reached bottom right of bounding box at (%.4f, %.4f, %.4f).', max_x, max_y, z_level);
-    cuttingToolPath2{end,4} = sprintf('Cutting tool has returned horizontally to start position (%.4f, %.4f, %.4f).', horizontalStart(1), horizontalStart(2), horizontalStart(3));
+    cuttingToolPath2{1,4} = sprintf('Beginning of cutting tool horizontal entry at (%.4f, %.4f, %.4f).', max_x, min_y, z_level);
+    cuttingToolPath2{numSteps,4} = sprintf('Cutting tool reached the bottom of the hole at (%.4f, %.4f, %.4f).', min_x, min_y, z_level);
+    cuttingToolPath2{numSteps+1,4} = 'Cutting tool is cutting horizontally along the y-axis.';
+    cuttingToolPath2{2*numSteps,4} = sprintf('Cutting tool reached bottom right at (%.4f, %.4f, %.4f). Exiting hole now', min_x, max_y, z_level);
+    cuttingToolPath2{end,4} = sprintf('Cutting tool exited the hole at (%.4f, %.4f, %.4f).', max_x, max_y, z_level);
     
-    % Enhanced display separators for clearer output:
+    % Enhanced display separators:
     separator = repmat('=', 1, 70);
     fprintf('\n%s\n', separator);
     disp('       *** CUTTING TOOL TRAJECTORY 2 (HORIZONTAL CUT) ***       ');
     fprintf('%s\n\n', separator);
     
-    % Display the full trajectory in the command window:
+    % Display the full trajectory:
     for i = 1:numTotalSteps
         fprintf('Step %d: x = %.4f, y = %.4f, z = %.4f, Orientation = [%.4f, %.4f, %.4f], Message: %s\n', ...
             i, cuttingToolPath2{i,1}, cuttingToolPath2{i,2}, cuttingToolPath2{i,3}, ...

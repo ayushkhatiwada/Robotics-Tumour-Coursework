@@ -1,4 +1,4 @@
-function generateLaserTrajectory2(VerticesUnique, z_tolerance)
+function laserPath2 = generateLaserTrajectory2(VerticesUnique, z_tolerance)
 % generateLaserTrajectory2 - Computes, displays, and stores the horizontal laser trajectory (round trip)
 %                             using a negative vertical offset (z_tolerance).
 %
@@ -102,5 +102,5 @@ function generateLaserTrajectory2(VerticesUnique, z_tolerance)
     fprintf('\n%s\n\n', separator);
     
     % Store the trajectory in the MATLAB base workspace as "laserPath2"
-    assignin('base', 'laserPath2', laserPath2);
+    assignin('base', 'laserBeamPath2', laserPath2);
 end

@@ -50,16 +50,20 @@ z_tolerance = 5;
 
 % Generate and display the position and orientation of the cuts for the 
 % vertical cuts
-generateLaserTrajectory1(VerticesUnique, z_tolerance, startPt1);
-generateCuttingTrajectory1(VerticesUnique, z_tolerance, startPt1);
+laserBeamPath1 = generateLaserTrajectory1(VerticesUnique, z_tolerance, startPt1);
+cuttingToolPath1 = generateCuttingToolTrajectory1(VerticesUnique, z_tolerance, startPt1);
 
 
 %% Horizontal Cuts of cutting tools (Laser & Cutting Tool Cut Trajectories)
 
 % Generate and display the position and orientation of the cuts for the 
 % horizontal cuts
-generateLaserTrajectory2(VerticesUnique, z_tolerance);
-generateCuttingTrajectory2(VerticesUnique, z_tolerance);
+laserBeamPath2 = generateLaserTrajectory2(VerticesUnique, z_tolerance);
+cuttingToolPath2 = generateCuttingToolTrajectory2(VerticesUnique, z_tolerance);
+
+
+%% Animate
+%animateCuttingPaths(laserBeamPath1, cuttingToolPath1, laserBeamPath2, cuttingToolPath2);
 
 
 %% Final Plot Adjustments
