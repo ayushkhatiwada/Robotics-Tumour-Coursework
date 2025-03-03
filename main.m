@@ -63,7 +63,7 @@ cuttingToolPath2 = generateCuttingToolTrajectory2(VerticesUnique, z_tolerance);
 
 
 %% Animate
-%animateCuttingPaths(laserBeamPath1, cuttingToolPath1, laserBeamPath2, cuttingToolPath2);
+animateCuttingPaths(laserBeamPath1, cuttingToolPath1, laserBeamPath2, cuttingToolPath2, VerticesUnique);
 
 
 %% Final Plot Adjustments
