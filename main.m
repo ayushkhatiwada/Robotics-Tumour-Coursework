@@ -75,7 +75,7 @@ zlabel('z (mm)');
 grid on;          
 view(3);          % Set 3D view
 legend('Location','best');
-title('Tumour and Bone Visualization with Bounding Box and Cutting Tool Path');
+title('Horizontal Cut Path of Tumour');
 
 % Release hold for future plotting
 hold off;
