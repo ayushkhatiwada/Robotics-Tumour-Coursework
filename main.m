@@ -34,7 +34,7 @@ z_tolerance = 5;
 % Outward offset distance for the cutting tool path
 outwards_tolerance = 5;      
 colour = 'm';       % Colour of the cutting tool path
-plotHorizontalCutPath(VerticesUnique, outwards_tolerance, z_tolerance, colour);
+%plotHorizontalCutPath(VerticesUnique, outwards_tolerance, z_tolerance, colour);
 
 
 %% Vertical Cuts of cutting tools (Laser & Cutting Tool Cut Trajectories)
