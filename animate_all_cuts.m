@@ -1,3 +1,22 @@
+%% Load Tumour Data to Visualize Tumour in Animation
+
+% Load the tumour data (X, Y, Z coordinates)
+load('X.mat'); % X coordinates of tumour surface
+load('Y.mat'); % Y coordinates of tumour surface
+load('Z.mat'); % Z coordinates of tumour surface
+
+% Compute the convex hull indices with simplification.
+[k2, ~] = convhull(X, Y, Z, 'Simplify', true);
+
+% Extract vertices used by the convex hull.
+Vertices = [X(k2(:,1)), Y(k2(:,1)), Z(k2(:,1));
+            X(k2(:,2)), Y(k2(:,2)), Z(k2(:,2));
+            X(k2(:,3)), Y(k2(:,3)), Z(k2(:,3))];
+
+% Remove duplicate vertices.
+VerticesUnique = unique(Vertices, 'rows');
+
+
 %% Vertical Cuts of cutting tools (Laser & Cutting Tool Cut Trajectories)
 
 % Offset (in mm) for the cutting path around the tumour
@@ -26,5 +45,6 @@ cuttingToolPath2 = generateCuttingToolTrajectory2(VerticesUnique, z_tolerance);
 %% Animate All Cuts
 
 % delay between animation steps in seconds
-delayBetweenCuts = 0;
+delayBetweenCuts = 0.03;
+% Animate the cuts
 animateCuttingPaths(laserBeamPath1, cuttingToolPath1, laserBeamPath2, cuttingToolPath2, VerticesUnique, delayBetweenCuts);

@@ -24,6 +24,7 @@ VerticesUnique = plotTumour(X, Y, Z);
 tolerance = 0;      % No outward offset for the outline
 colour = "#EDB120"; % Colour for the outline
 lineStyle = ':';    % Line style (dotted)
+
 plotTumourOutline(VerticesUnique, tolerance, colour, lineStyle);
 
 
@@ -34,7 +35,8 @@ z_tolerance = 5;
 % Outward offset distance for the cutting tool path
 outwards_tolerance = 5;      
 colour = 'm';       % Colour of the cutting tool path
-%plotHorizontalCutPath(VerticesUnique, outwards_tolerance, z_tolerance, colour);
+
+plotHorizontalCutPath(VerticesUnique, outwards_tolerance, z_tolerance, colour);
 
 
 %% Vertical Cuts of cutting tools (Laser & Cutting Tool Cut Trajectories)
